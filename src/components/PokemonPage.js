@@ -16,15 +16,21 @@ useEffect(() => {
 },[])
 
 //FILTER search a Pokemon by its name in order to narrow down the cards shown on the page
+//Allow users to search a Pokemon by its name in order to narrow down the cards shown on the page
 const filteredPokemonCards = [...pokemonCards].filter((el) => {
   return el.name.toLowerCase().includes(search.toLowerCase())
 })
+
+function handleNewPokemon(addNewPokemon){
+  setPokemonCards([...pokemonCards, 
+  addNewPokemon])
+}
 
   return (
     <Container>
       <h1>Pokemon Searcher</h1>
       <br />
-      <PokemonForm />
+      <PokemonForm handleNewPokemon={handleNewPokemon}/>
       <br />
       <Search search={search} setSearch={setSearch}/>
       <br />
