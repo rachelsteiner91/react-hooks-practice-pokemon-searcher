@@ -5,39 +5,35 @@ import Search from "./Search";
 import { Container } from "semantic-ui-react";
 
 function PokemonPage() {
-  //Create an index displaying Pokemon 'cards'
-  const [pokemonCards, setPokemonCards] = useState([])
+  const [pokemon, setPokemon] = useState([])
   const [search, setSearch] = useState("")
 
-  useEffect(() => {
-    fetch('http://localhost:3001/pokemon')
-    .then(response => response.json())
-    .then(data => setPokemonCards(data))
-  }, [])
+useEffect(()  => {
+  fetch('http://localhost:3001/pokemon')
+  .then(response => response.json())
+  .then(data  => setPokemon(data))
+}, [])
 
-  //search a Pokemon by its name in order to narrow down the cards shown on the page
-  const filteredPokemonCards =[...pokemonCards].filter((el) => {
+const filteredPokemon  = [...pokemon].filter((el) =>  {
   return el.name.toLowerCase().includes(search.toLowerCase())
-  })
+})
 
-  //add new pokemon 
-  function handleNewPokemon(addNewPokemon){
-    setPokemonCards([...pokemonCards, 
-      addNewPokemon])
-    }
- 
-  
+function addPokemon(newPokemon) {
+  setPokemon([...pokemon, newPokemon])
+}
   return (
     <Container>
       <h1>Pokemon Searcher</h1>
       <br />
-      <PokemonForm handleNewPokemon={handleNewPokemon}/>
+      <PokemonForm addPokemon={addPokemon}/>
       <br />
-      <Search search={search} setSearch={setSearch}/>
+      <Search  setSearch={setSearch}  search={search} />
       <br />
-      <PokemonCollection pokemonCards={filteredPokemonCards} />
+      <PokemonCollection pokemon={filteredPokemon}/>
     </Container>
   );
 }
 
 export default PokemonPage;
+
+// Allow users to search a Pokemon by its name in order to narrow down the cards shown on the page

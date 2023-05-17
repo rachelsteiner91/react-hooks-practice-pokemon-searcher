@@ -1,37 +1,38 @@
 import React, {useState} from "react";
 import { Form } from "semantic-ui-react";
 
-function PokemonForm({handleNewPokemon}) {
-  const initialForm = {
+function PokemonForm({addPokemon}) {
+  const initialForm ={
     name: '',
     hp: '',
-    frontUrl:'',
-    backUrl:''
+    sprites: {frontUrl:  '',
+    backUrl: ''},
   }
-  const [form, setForm] = useState(initialForm)
-  function handleChange(e){
+  const [form, setForm] =useState(initialForm)
+  function handleChangeForm(e){
     setForm({...form,
     [e.target.name]: e.target.value})
   }
 
   function handleSubmit(e){
     e.preventDefault()
-    fetch('http://localhost:3001/pokemon', {
-    method: 'POST',
-    body: JSON.stringify({
-      name: form.name,
-      hp: form.hp,
-      sprites: {front: form.frontUrl, back: form.backUrl}
-  }),
-    headers:{
-      'content-type' : 'application/json'
-    }
-  })
-  .then(response => response.json())
-  .then(addNewPokemon => {
-      handleNewPokemon(addNewPokemon)
-  })
+    fetch('http://localhost:3001/pokemon', 
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        name: form.name,
+        hp: form.hp,
+        sprites: {front: form.frontUrl,  back: form.backUrl}
+      }),
+      headers:{'content-type': 'application/json'}
+    })
+    .then(response => response.json())
+    .then(newPokemon  => {
+      addPokemon(newPokemon)
+    })
   }
+    
+
   return (
     <div>
       <h3>Add a Pokemon!</h3>
@@ -43,18 +44,17 @@ function PokemonForm({handleNewPokemon}) {
         <Form.Group widths="equal">
           <Form.Input 
           value={form.name}
-          fluid 
-          label="Name" 
+          fluid label="Name" 
           placeholder="Name" 
           name="name" 
-          onchange={(e)=> handleChange(e)}
+          onChange={(e) =>handleChangeForm(e)}
           />
           <Form.Input 
-          value={form.hp} 
+          value={form.hp}
           fluid label="hp" 
-          placeholder="hp"
-          name="hp"  
-          onchange={(e)=> handleChange(e)}
+          placeholder="hp" 
+          name="hp" 
+          onChange={(e) =>handleChangeForm(e)}
           />
           <Form.Input
             value={form.frontUrl}
@@ -62,7 +62,7 @@ function PokemonForm({handleNewPokemon}) {
             label="Front Image URL"
             placeholder="url"
             name="frontUrl"
-            onchange={(e)=> handleChange(e)}
+            onChange={(e) =>handleChangeForm(e)}
           />
           <Form.Input
             value={form.backUrl}
@@ -70,7 +70,7 @@ function PokemonForm({handleNewPokemon}) {
             label="Back Image URL"
             placeholder="url"
             name="backUrl"
-            onchange={(e)=> handleChange(e)}
+            onChange={(e) =>handleChangeForm(e)}
           />
         </Form.Group>
         <Form.Button>Submit</Form.Button>

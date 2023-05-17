@@ -1,31 +1,34 @@
 import React, {useState} from "react";
 import { Card } from "semantic-ui-react";
 
-function PokemonCard({pokemon}) {
-  //When clicked, the CARD should toggle between displaying the front and back sprites. so add the onclick to the <Card> element
+function PokemonCard({onePokemon}) {
   const [isClicked, setIsClicked] = useState(true)
 
-  function handleClick(e) {
+  function handleToggleClick(e)  {
     setIsClicked(!isClicked)
   }
-
   return (
-    <Card  onClick={(e) => handleClick(e)}>
+    <Card>
       <div>
-        <div className="image">
-          <img 
-          value={pokemon.id} 
-          src={isClicked? pokemon.sprites.front : pokemon.sprites.back} 
+        <div className="image" onClick={(e) => handleToggleClick(e)}>
+          {isClicked?
+          (<img 
+          src={onePokemon.sprites.front}
           alt="oh no!"
-          />
+           /> ) :
+           (<img 
+          src={onePokemon.sprites.back}
+          alt="oh no!"
+           /> )
+          }
         </div>
         <div className="content">
-          <div className="header">{pokemon.name}</div>
+          <div className="header">{onePokemon.name}</div>
         </div>
         <div className="extra content">
           <span>
             <i className="icon heartbeat red" />
-            {pokemon.hp}
+            {onePokemon.hp}
           </span>
         </div>
       </div>
@@ -38,3 +41,12 @@ export default PokemonCard;
 
 //Render each Pokemon name, sprite, and hp in a card
 //When clicked, the card should toggle between displaying the front and back sprites
+
+// "pokemon": [
+  // {
+  //   "id": 2,
+  //   "name": "ivysaur",
+  //   "hp": 60,
+  //   "sprites": {
+  //     "front": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png",
+  //     "back": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/2.png"
